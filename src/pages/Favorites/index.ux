@@ -1,0 +1,269 @@
+<template>
+  <div class="container">
+    <image class="bg" src="/assets/img/bg.png"></image>
+    
+    <!-- 顶部标题 -->
+    <div class="header">
+      <text class="title">收藏</text>
+    </div>
+
+    <!-- Tab 切换 -->
+    <div class="tab-switch">
+      <div class="tab-item {{currentTab === 'wallpaper' ? 'active' : ''}}" onclick="switchType('wallpaper')">
+        <text class="tab-text">壁纸</text>
+      </div>
+      <div class="tab-item {{currentTab === 'avatar' ? 'active' : ''}}" onclick="switchType('avatar')">
+        <text class="tab-text">头像</text>
+      </div>
+    </div>
+
+    <!-- 收藏列表 -->
+    <list class="list" if="{{favoritesList.length > 0}}">
+      <list-item type="wallpapers" class="wallpaper-grid">
+        <div class="wallpaper-item" for="{{favoritesList}}" onclick="openDetail($item)">
+           <stack class="wallpaper-stack">
+             <image class="wallpaper-img" src="{{$item.imageUrl}}"></image>
+           </stack>
+        </div>
+      </list-item>
+      
+      <!-- 底部占位，防止被导航栏遮挡 -->
+      <list-item type="spacer" style="height: 150px;"></list-item>
+    </list>
+
+    <!-- 空状态 -->
+    <div class="empty-state" if="{{favoritesList.length === 0}}">
+      <image class="empty-icon" src="/assets/img/bg.png"></image>
+      <text class="empty-text">暂无图片~</text>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="tab-bar">
+       <div class="tab-item" onclick="switchTab('wallpaper')">
+          <image class="tab-icon" src="/assets/img/bizhi-u.png"></image>
+          <text class="tab-text">壁纸</text>
+       </div>
+       <div class="tab-item" onclick="switchTab('avatar')">
+          <image class="tab-icon" src="/assets/img/touxiang-u.png"></image>
+          <text class="tab-text">头像</text>
+       </div>
+       <div class="tab-item" onclick="switchTab('favorites')">
+          <image class="tab-icon" src="/assets/img/shoucang-s.png"></image>
+          <text class="tab-text active">收藏</text>
+       </div>
+       <div class="tab-item" onclick="switchTab('mine')">
+          <image class="tab-icon" src="/assets/img/mine-u.png"></image>
+          <text class="tab-text">我的</text>
+       </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+import storage from '@system.storage'
+
+export default {
+  private: {
+    title: '收藏',
+    currentTab: 'wallpaper',
+    favoritesList: []
+  },
+  onInit() {
+    this.$page.setTitleBar({ text: '收藏' })
+    this.loadFavorites()
+  },
+  onShow() {
+    // 每次显示页面时重新加载收藏列表
+    this.loadFavorites()
+  },
+  loadFavorites() {
+    const storageKey = this.currentTab === 'wallpaper' ? 'wallpaper_favorites' : 'avatar_favorites'
+    storage.get({
+      key: storageKey,
+      success: (data) => {
+        const favorites = JSON.parse(data || '[]')
+        // 按时间倒序排序，最新收藏的在前面
+        this.favoritesList = favorites.sort((a, b) => b.timestamp - a.timestamp)
+      },
+      fail: () => {
+        this.favoritesList = []
+      }
+    })
+  },
+  switchType(type) {
+    if (this.currentTab !== type) {
+      this.currentTab = type
+      this.loadFavorites()
+    }
+  },
+  openDetail(item) {
+    const detailPage = item.type === 'wallpaper' ? '/pages/WallpaperDetail' : '/pages/AvatarDetail'
+    router.push({
+      uri: detailPage,
+      params: {
+        imageUrl: item.imageUrl,
+        itemId: item.itemId
+      }
+    })
+  },
+  switchTab(page) {
+    if (page === 'wallpaper') router.replace({ uri: '/pages/Wallpaper' })
+    if (page === 'avatar') router.replace({ uri: '/pages/Avatar' })
+    if (page === 'mine') router.replace({ uri: '/pages/Mine' })
+    // 已经在收藏页，不需要跳转
+  }
+}
+</script>
+
+<style>
+  .container {
+    flex-direction: column;
+    flex: 1;
+    background-color: #0e1b23;
+  }
+  
+  .bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .header {
+    height: 120px;
+    padding-top: 40px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .title {
+    font-size: 42px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  
+  /* Tab 切换样式 */
+  .tab-switch {
+    width: 400px;
+    height: 80px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 40px;
+    flex-direction: row;
+    margin-top: 30px;
+    margin-left: 175px;
+    margin-bottom: 30px;
+    padding: 6px;
+  }
+  
+  .tab-switch .tab-item {
+    flex: 1;
+    height: 68px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 34px;
+  }
+  
+  .tab-switch .tab-item.active {
+    background-color: rgba(100, 200, 180, 0.8);
+  }
+  
+  .tab-switch .tab-text {
+    font-size: 32px;
+    color: #ffffff;
+  }
+  
+  /* 列表样式 */
+  .list {
+    flex: 1;
+    width: 100%;
+    margin-bottom: 150px;
+  }
+  
+  .wallpaper-grid {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  
+  .wallpaper-item {
+    width: 340px;
+    margin-right: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .wallpaper-stack {
+    width: 340px;
+    height: 580px;
+  }
+  
+  .wallpaper-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+  }
+  
+  /* 空状态样式 */
+  .empty-state {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+  }
+  
+  .empty-icon {
+    width: 300px;
+    height: 300px;
+    opacity: 0.3;
+  }
+  
+  .empty-text {
+    font-size: 36px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 40px;
+  }
+  
+  /* 底部导航栏样式 */
+  .tab-bar {
+    height: 150px;
+    width: 100%;
+    background-color: rgba(20, 30, 40, 0.95);
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    border-top-width: 1px;
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .tab-bar .tab-item {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .tab-bar .tab-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px;
+  }
+  
+  .tab-bar .tab-text {
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .tab-bar .tab-text.active {
+    color: #64c8b4;
+  }
+</style>

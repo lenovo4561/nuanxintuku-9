@@ -1,0 +1,43 @@
+<template>
+  <div class="doc-page">
+    <web
+      class="web-view"
+      src="{{url}}"
+      onpagestart="onPageStart"
+      onpagefinish="onPageFinish"
+    ></web>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      url: '',
+      title: ''
+    }
+  },
+  onInit() {
+    if (this.title) {
+      this.$page.setTitleBar({ text: this.title })
+    }
+  },
+  onPageStart() {
+    console.log('Web page start loading')
+  },
+  onPageFinish() {
+    console.log('Web page finish loading')
+  }
+}
+</script>
+
+<style>
+.doc-page {
+  flex: 1;
+  flex-direction: column;
+}
+
+.web-view {
+  flex: 1;
+}
+</style>

@@ -1,0 +1,93 @@
+<import name="privacy-modal" src="./PrivacyModal.ux"></import>
+
+<template>
+  <div class="container">
+    <image class="bg" src="/assets/img/loading-bg.png"></image>
+    <div class="content">
+      <image class="logo" src="/assets/img/loading-icon.png"></image>
+    </div>
+
+    <privacy-modal
+      show="{{showPrivacy}}"
+      onagree-evt="handleAgree"
+    ></privacy-modal>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+import storage from '@system.storage'
+
+export default {
+  data() {
+    return {
+      showPrivacy: false
+    }
+  },
+  onInit() {
+    // 检查是否已同意协议
+    storage.get({
+      key: 'agreed_privacy',
+      success: data => {
+        if (data === 'true') {
+          // 已同意，延迟跳转
+          setTimeout(() => {
+            this.goHome()
+          }, 2000)
+        } else {
+          // 未同意，显示模态框
+          this.showPrivacy = true
+        }
+      },
+      fail: () => {
+        this.showPrivacy = true
+      }
+    })
+  },
+  handleAgree() {
+    this.showPrivacy = false
+    // 保存同意状态
+    storage.set({
+      key: 'agreed_privacy',
+      value: 'true'
+    })
+    this.goHome()
+  },
+  goHome() {
+    router.replace({
+      uri: '/pages/Wallpaper'
+    })
+  }
+}
+</script>
+
+<style>
+.container {
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content {
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+</style>

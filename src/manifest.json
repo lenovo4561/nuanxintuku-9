@@ -1,0 +1,128 @@
+{
+  "package": "com.nuanxintkjs.nxheartwarming",
+  "name": "暖心图库",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "minPlatformVersion": 1121,
+  "icon": "/assets/images/logo.png",
+  "features": [
+    {
+      "name": "system.prompt"
+    },
+    {
+      "name": "system.router"
+    },
+    {
+      "name": "system.shortcut"
+    },
+    {
+      "name": "system.fetch"
+    },
+    {
+      "name": "system.storage"
+    },
+    {
+      "name": "system.webview"
+    }
+  ],
+  "permissions": [
+    {
+      "origin": "*"
+    }
+  ],
+  "template/official": "demo-template",
+  "config": {
+    "logLevel": "debug",
+    "designWidth": 1080
+  },
+  "router": {
+    "entry": "pages/Launch",
+    "pages": {
+      "pages/Launch": {
+        "component": "index"
+      },
+      "pages/Wallpaper": {
+        "component": "index"
+      },
+      "pages/WallpaperDetail": {
+        "component": "index"
+      },
+      "pages/Avatar": {
+        "component": "index"
+      },
+      "pages/Favorites": {
+        "component": "index"
+      },
+      "pages/Mine": {
+        "component": "index"
+      },
+      "pages/Web": {
+        "component": "index"
+      },
+      "pages/Demo": {
+        "component": "index"
+      },
+      "pages/DemoDetail": {
+        "component": "index"
+      },
+      "pages/CategoryList": {
+        "component": "index"
+      }
+    }
+  },
+  "display": {
+    "titleBarBackgroundColor": "#f2f2f2",
+    "titleBarTextColor": "#414141",
+    "menu": true,
+    "pages": {
+      "pages/Launch": {
+        "titleBar": false
+      },
+      "pages/CategoryList": {
+        "titleBar": false
+      },
+      "pages/Web": {
+        "titleBarText": "详情"
+      },
+      "pages/Demo": {
+        "titleBarText": "快应用示例模版",
+        "menu": false
+      },
+      "pages/DemoDetail": {
+        "titleBarText": "详情页"
+      }
+    },
+    "tabBar": {
+      "color": "#bbbbbb",
+      "selectedColor": "#000000",
+      "backgroundColor": "#ffffff",
+      "list": [
+        {
+          "pagePath": "pages/Wallpaper",
+          "text": "壁纸",
+          "iconPath": "assets/img/bizhi-u.png",
+          "selectedIconPath": "assets/img/bizhi-s.png"
+        },
+        {
+          "pagePath": "pages/Avatar",
+          "text": "头像",
+          "iconPath": "assets/img/touxiang-u.png",
+          "selectedIconPath": "assets/img/touxiang-s.png"
+        },
+        {
+          "pagePath": "pages/Favorites",
+          "text": "收藏",
+          "iconPath": "assets/img/shoucang-u.png",
+          "selectedIconPath": "assets/img/shoucang-s.png"
+        },
+        {
+          "pagePath": "pages/Mine",
+          "text": "我的",
+          "iconPath": "assets/img/mine-u.png",
+          "selectedIconPath": "assets/img/mine-s.png"
+        }
+      ]
+    }
+  },
+  "deviceTypeList": ["phone"]
+}

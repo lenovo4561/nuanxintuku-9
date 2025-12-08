@@ -1,0 +1,207 @@
+<template>
+  <div class="container">
+    <!-- 顶部导航 -->
+    <div class="nav-bar">
+      <div class="back-btn" onclick="goBack">
+        <image class="back-icon" src="/assets/img/back.png"></image>
+      </div>
+    </div>
+
+    <!-- 图片区域 -->
+    <div class="image-container">
+      <image class="avatar-img" src="{{imageUrl}}" object-fit="contain"></image>
+    </div>
+
+    <!-- 底部操作栏 -->
+    <div class="bottom-bar">
+      <!-- 下载按钮 -->
+      <div class="action-btn download-btn" onclick="downloadAvatar">
+        <image class="btn-icon" src="/assets/img/xiazai.png"></image>
+        <text class="btn-text">下载</text>
+      </div>
+      
+      <!-- 喜欢按钮 -->
+      <div class="action-btn like-btn" onclick="toggleLike">
+        <image class="btn-icon" src="{{isLiked ? '/assets/img/like-s.png' : '/assets/img/like-s.png'}}"></image>
+        <text class="btn-text">{{isLiked ? '已喜欢' : '喜欢'}}</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+import prompt from '@system.prompt'
+import storage from '@system.storage'
+
+export default {
+  protected: {
+    imageUrl: '',
+    itemId: '',
+    isLiked: false
+  },
+  onInit() {
+    if (!this.imageUrl) {
+      this.imageUrl = '/assets/img/bg.png';
+    }
+    // 检查是否已收藏
+    this.checkIfLiked()
+  },
+  checkIfLiked() {
+    storage.get({
+      key: 'avatar_favorites',
+      success: (data) => {
+        const favorites = JSON.parse(data || '[]')
+        this.isLiked = favorites.some(item => item.imageUrl === this.imageUrl)
+      },
+      fail: () => {
+        this.isLiked = false
+      }
+    })
+  },
+  goBack() {
+    router.back()
+  },
+  downloadAvatar() {
+    prompt.showToast({
+      message: '开始下载...'
+    })
+    // TODO: 实现下载逻辑
+  },
+  toggleLike() {
+    storage.get({
+      key: 'avatar_favorites',
+      success: (data) => {
+        let favorites = JSON.parse(data || '[]')
+        const index = favorites.findIndex(item => item.imageUrl === this.imageUrl)
+        
+        if (index > -1) {
+          // 已收藏，取消收藏
+          favorites.splice(index, 1)
+          this.isLiked = false
+          prompt.showToast({
+            message: '已取消收藏'
+          })
+        } else {
+          // 未收藏，添加收藏
+          favorites.push({
+            imageUrl: this.imageUrl,
+            itemId: this.itemId,
+            type: 'avatar',
+            timestamp: Date.now()
+          })
+          this.isLiked = true
+          prompt.showToast({
+            message: '已添加到收藏'
+          })
+        }
+        
+        // 保存到 localStorage
+        storage.set({
+          key: 'avatar_favorites',
+          value: JSON.stringify(favorites)
+        })
+      },
+      fail: () => {
+        // 第一次收藏
+        const favorites = [{
+          imageUrl: this.imageUrl,
+          itemId: this.itemId,
+          type: 'avatar',
+          timestamp: Date.now()
+        }]
+        this.isLiked = true
+        storage.set({
+          key: 'avatar_favorites',
+          value: JSON.stringify(favorites)
+        })
+        prompt.showToast({
+          message: '已添加到收藏'
+        })
+      }
+    })
+  }
+}
+</script>
+
+<style>
+  .container {
+    flex-direction: column;
+    flex: 1;
+    background-color: #0e1b23;
+  }
+
+  .nav-bar {
+    height: 120px;
+    padding-left: 30px;
+    padding-top: 30px;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .back-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    background-color: rgba(255, 255, 255, 0.2);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .back-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .image-container {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    margin-top: 100px;
+    margin-bottom: 50px;
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+  }
+
+  .bottom-bar {
+    height: 200px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 60px;
+    padding-bottom: 50px;
+  }
+
+  .action-btn {
+    width: 300px;
+    height: 110px;
+    background-color: #9bfad9;
+    border-radius: 55px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+    object-fit: contain;
+  }
+
+  .btn-text {
+    font-size: 36px;
+    color: #000000;
+    font-weight: bold;
+  }
+</style>
