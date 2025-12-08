@@ -8,6 +8,8 @@
  * 应用级别的配置，供所有页面公用
  */
 
+import { initUser } from './helper/init'
+
 const $utils = require('./helper/utils').default
 const $apis = require('./helper/apis').default
 
@@ -17,6 +19,10 @@ hook2global.$utils = $utils
 hook2global.$apis = $apis
 
 export default {
-  onCreate() {}
+  onCreate() {
+    console.log('App onCreate')
+    // 应用启动时发起初始化请求
+    initUser()
+  }
 }
 </script>

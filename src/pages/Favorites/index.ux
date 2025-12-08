@@ -1,62 +1,65 @@
 <template>
-  <div class="container">
-    <image class="bg" src="/assets/img/bg.png"></image>
-    
-    <!-- 顶部标题 -->
-    <div class="header">
-      <text class="title">收藏</text>
-    </div>
+  <stack class="page">
+    <!-- 背景图 -->
+    <image class="bg-img" src="/assets/img/bg.png"></image>
 
-    <!-- Tab 切换 -->
-    <div class="tab-switch">
-      <div class="tab-item {{currentTab === 'wallpaper' ? 'active' : ''}}" onclick="switchType('wallpaper')">
-        <text class="tab-text">壁纸</text>
+    <!-- 内容区域 -->
+    <div class="content">
+      <!-- 标题栏 -->
+      <div class="header-bar">
+        <text class="header-title">收藏</text>
       </div>
-      <div class="tab-item {{currentTab === 'avatar' ? 'active' : ''}}" onclick="switchType('avatar')">
-        <text class="tab-text">头像</text>
-      </div>
-    </div>
 
-    <!-- 收藏列表 -->
-    <list class="list" if="{{favoritesList.length > 0}}">
-      <list-item type="wallpapers" class="wallpaper-grid">
-        <div class="wallpaper-item" for="{{favoritesList}}" onclick="openDetail($item)">
-           <stack class="wallpaper-stack">
-             <image class="wallpaper-img" src="{{$item.imageUrl}}"></image>
-           </stack>
+      <!-- Tab 切换 -->
+      <div class="tabs-wrapper">
+        <div class="tabs-container">
+          <div
+            class="tab-item {{currentTab === 'wallpaper' ? 'tab-active' : ''}}"
+            onclick="switchType('wallpaper')"
+          >
+            <text
+              class="tab-text {{currentTab === 'wallpaper' ? 'text-active' : ''}}"
+              >壁纸</text
+            >
+          </div>
+          <div
+            class="tab-item {{currentTab === 'avatar' ? 'tab-active' : ''}}"
+            onclick="switchType('avatar')"
+          >
+            <text
+              class="tab-text {{currentTab === 'avatar' ? 'text-active' : ''}}"
+              >头像</text
+            >
+          </div>
         </div>
-      </list-item>
-      
-      <!-- 底部占位，防止被导航栏遮挡 -->
-      <list-item type="spacer" style="height: 150px;"></list-item>
-    </list>
+      </div>
 
-    <!-- 空状态 -->
-    <div class="empty-state" if="{{favoritesList.length === 0}}">
-      <image class="empty-icon" src="/assets/img/bg.png"></image>
-      <text class="empty-text">暂无图片~</text>
-    </div>
+      <!-- 列表区域 -->
+      <list class="list-view" if="{{favoritesList.length > 0}}">
+        <list-item type="wallpapers" class="grid-container">
+          <div
+            class="grid-item"
+            for="{{favoritesList}}"
+            onclick="openDetail($item)"
+          >
+            <stack class="item-stack">
+              <image class="item-img" src="{{$item.imageUrl}}"></image>
+              <div class="badge" if="{{$item.isNew}}">
+                <text class="badge-text">最新</text>
+              </div>
+            </stack>
+          </div>
+        </list-item>
+        <list-item type="spacer" class="spacer"></list-item>
+      </list>
 
-    <!-- 底部导航栏 -->
-    <div class="tab-bar">
-       <div class="tab-item" onclick="switchTab('wallpaper')">
-          <image class="tab-icon" src="/assets/img/bizhi-u.png"></image>
-          <text class="tab-text">壁纸</text>
-       </div>
-       <div class="tab-item" onclick="switchTab('avatar')">
-          <image class="tab-icon" src="/assets/img/touxiang-u.png"></image>
-          <text class="tab-text">头像</text>
-       </div>
-       <div class="tab-item" onclick="switchTab('favorites')">
-          <image class="tab-icon" src="/assets/img/shoucang-s.png"></image>
-          <text class="tab-text active">收藏</text>
-       </div>
-       <div class="tab-item" onclick="switchTab('mine')">
-          <image class="tab-icon" src="/assets/img/mine-u.png"></image>
-          <text class="tab-text">我的</text>
-       </div>
+      <!-- 空状态 -->
+      <div class="empty-view" if="{{favoritesList.length === 0}}">
+        <image class="empty-img" src="/assets/img/kong.png"></image>
+        <text class="empty-text">暂无图片~</text>
+      </div>
     </div>
-  </div>
+  </stack>
 </template>
 
 <script>
@@ -64,13 +67,16 @@ import router from '@system.router'
 import storage from '@system.storage'
 
 export default {
-  private: {
-    title: '收藏',
-    currentTab: 'wallpaper',
-    favoritesList: []
+  data() {
+    return {
+      title: '收藏',
+      currentTab: 'wallpaper',
+      favoritesList: []
+    }
   },
   onInit() {
-    this.$page.setTitleBar({ text: '收藏' })
+    // 隐藏系统标题栏，使用自定义标题
+    // manifest.json 中也已配置 titleBar: false
     this.loadFavorites()
   },
   onShow() {
@@ -78,10 +84,13 @@ export default {
     this.loadFavorites()
   },
   loadFavorites() {
-    const storageKey = this.currentTab === 'wallpaper' ? 'wallpaper_favorites' : 'avatar_favorites'
+    const storageKey =
+      this.currentTab === 'wallpaper'
+        ? 'wallpaper_favorites'
+        : 'avatar_favorites'
     storage.get({
       key: storageKey,
-      success: (data) => {
+      success: data => {
         const favorites = JSON.parse(data || '[]')
         // 按时间倒序排序，最新收藏的在前面
         this.favoritesList = favorites.sort((a, b) => b.timestamp - a.timestamp)
@@ -98,7 +107,10 @@ export default {
     }
   },
   openDetail(item) {
-    const detailPage = item.type === 'wallpaper' ? '/pages/WallpaperDetail' : '/pages/AvatarDetail'
+    const detailPage =
+      item.type === 'wallpaper'
+        ? '/pages/WallpaperDetail'
+        : '/pages/AvatarDetail'
     router.push({
       uri: detailPage,
       params: {
@@ -107,163 +119,153 @@ export default {
       }
     })
   },
-  switchTab(page) {
-    if (page === 'wallpaper') router.replace({ uri: '/pages/Wallpaper' })
-    if (page === 'avatar') router.replace({ uri: '/pages/Avatar' })
-    if (page === 'mine') router.replace({ uri: '/pages/Mine' })
-    // 已经在收藏页，不需要跳转
+  navigateTo(page) {
+    router.push({
+      uri: page
+    })
   }
 }
 </script>
 
 <style>
-  .container {
-    flex-direction: column;
-    flex: 1;
-    background-color: #0e1b23;
-  }
-  
-  .bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .header {
-    height: 120px;
-    padding-top: 40px;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .title {
-    font-size: 42px;
-    font-weight: bold;
-    color: #ffffff;
-  }
-  
-  /* Tab 切换样式 */
-  .tab-switch {
-    width: 400px;
-    height: 80px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 40px;
-    flex-direction: row;
-    margin-top: 30px;
-    margin-left: 175px;
-    margin-bottom: 30px;
-    padding: 6px;
-  }
-  
-  .tab-switch .tab-item {
-    flex: 1;
-    height: 68px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 34px;
-  }
-  
-  .tab-switch .tab-item.active {
-    background-color: rgba(100, 200, 180, 0.8);
-  }
-  
-  .tab-switch .tab-text {
-    font-size: 32px;
-    color: #ffffff;
-  }
-  
-  /* 列表样式 */
-  .list {
-    flex: 1;
-    width: 100%;
-    margin-bottom: 150px;
-  }
-  
-  .wallpaper-grid {
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-  
-  .wallpaper-item {
-    width: 340px;
-    margin-right: 15px;
-    margin-bottom: 20px;
-  }
-  
-  .wallpaper-stack {
-    width: 340px;
-    height: 580px;
-  }
-  
-  .wallpaper-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    object-fit: cover;
-  }
-  
-  /* 空状态样式 */
-  .empty-state {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 200px;
-  }
-  
-  .empty-icon {
-    width: 300px;
-    height: 300px;
-    opacity: 0.3;
-  }
-  
-  .empty-text {
-    font-size: 36px;
-    color: rgba(255, 255, 255, 0.5);
-    margin-top: 40px;
-  }
-  
-  /* 底部导航栏样式 */
-  .tab-bar {
-    height: 150px;
-    width: 100%;
-    background-color: rgba(20, 30, 40, 0.95);
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border-top-width: 1px;
-    border-top-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .tab-bar .tab-item {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-  }
-  
-  .tab-bar .tab-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 8px;
-  }
-  
-  .tab-bar .tab-text {
-    font-size: 24px;
-    color: rgba(255, 255, 255, 0.6);
-  }
-  
-  .tab-bar .tab-text.active {
-    color: #64c8b4;
-  }
+.page {
+  width: 100%;
+  height: 100%;
+}
+
+.bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.header-bar {
+  height: 28px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 9px;
+}
+
+.header-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.tabs-wrapper {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 9px;
+  margin-bottom: 9px;
+}
+
+.tabs-container {
+  width: 222px;
+  height: 23px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  flex-direction: row;
+  padding: 2px;
+}
+
+.tab-item {
+  flex: 1;
+  height: 19px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.tab-active {
+  background-color: #98f5e1;
+}
+
+.tab-text {
+  font-size: 8px;
+  color: #ffffff;
+}
+
+.text-active {
+  color: #000000;
+  font-weight: bold;
+}
+
+.list-view {
+  flex: 1;
+  width: 100%;
+}
+
+.grid-container {
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding-left: 9px;
+  padding-right: 9px;
+  overflow: hidden;
+}
+
+.grid-item {
+  width: 111px;
+  margin-bottom: 9px;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.item-stack {
+  width: 100%;
+  height: 185px;
+}
+
+.item-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 7px;
+  object-fit: cover;
+}
+
+.badge {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: #ccfbf1;
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+
+.badge-text {
+  font-size: 6px;
+  color: #000000;
+}
+
+.spacer {
+  height: 46px;
+}
+
+.empty-view {
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty-img {
+  width: 69px;
+  height: 69px;
+  object-fit: contain;
+}
+
+.empty-text {
+  font-size: 8px;
+  color: #ffffff;
+  margin-top: 9px;
+}
 </style>

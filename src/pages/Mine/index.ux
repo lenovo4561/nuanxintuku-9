@@ -1,70 +1,43 @@
 <template>
-  <div class="container">
-    <!-- 背景图 -->
-    <image class="bg" src="/assets/img/shangdian-bg.png"></image>
-    
-    <!-- 用户信息区域 -->
-    <div class="user-section">
+  <stack class="page-container">
+    <image class="bg-image" src="/assets/img/mine-bg.png"></image>
+
+    <div class="content-wrapper">
+      <!-- 用户信息区域 -->
       <div class="user-info">
-        <div class="avatar-wrapper">
-          <image class="avatar" src="/assets/img/bg.png"></image>
-        </div>
+        <image class="avatar" src="/assets/img/a.png"></image>
         <text class="username">周小艺</text>
       </div>
-    </div>
-    
-    <!-- 其他服务 -->
-    <div class="services-section">
+
+      <!-- 服务卡片 -->
       <text class="section-title">其他服务</text>
-      
       <div class="service-card">
-        <!-- 用户协议 -->
         <div class="service-item" onclick="openAgreement">
-          <div class="service-left">
-            <div class="icon-wrapper agreement-icon">
-              <text class="icon-text">📄</text>
-            </div>
-            <text class="service-text">用户协议</text>
+          <div class="item-left">
+            <image
+              class="item-icon"
+              src="/assets/img/user-agreement.png"
+            ></image>
+            <text class="item-text">用户协议</text>
           </div>
-          <text class="arrow-text">›</text>
+          <image class="arrow-icon" src="/assets/img/arrow.png"></image>
         </div>
-        
-        <!-- 分割线 -->
+
         <div class="divider"></div>
-        
-        <!-- 隐私政策 -->
+
         <div class="service-item" onclick="openPrivacy">
-          <div class="service-left">
-            <div class="icon-wrapper privacy-icon">
-              <text class="icon-text">🔒</text>
-            </div>
-            <text class="service-text">隐私政策</text>
+          <div class="item-left">
+            <image
+              class="item-icon"
+              src="/assets/img/privacy-policy.png"
+            ></image>
+            <text class="item-text">隐私政策</text>
           </div>
-          <text class="arrow-text">›</text>
+          <image class="arrow-icon" src="/assets/img/arrow.png"></image>
         </div>
       </div>
     </div>
-    
-    <!-- 底部导航栏 -->
-    <div class="tab-bar">
-       <div class="tab-item" onclick="switchTab('wallpaper')">
-          <image class="tab-icon" src="/assets/img/bizhi-u.png"></image>
-          <text class="tab-text">壁纸</text>
-       </div>
-       <div class="tab-item" onclick="switchTab('avatar')">
-          <image class="tab-icon" src="/assets/img/touxiang-u.png"></image>
-          <text class="tab-text">头像</text>
-       </div>
-       <div class="tab-item" onclick="switchTab('favorites')">
-          <image class="tab-icon" src="/assets/img/shoucang-u.png"></image>
-          <text class="tab-text">收藏</text>
-       </div>
-       <div class="tab-item" onclick="switchTab('mine')">
-          <image class="tab-icon" src="/assets/img/mine-s.png"></image>
-          <text class="tab-text active">我的</text>
-       </div>
-    </div>
-  </div>
+  </stack>
 </template>
 
 <script>
@@ -72,15 +45,17 @@ import router from '@system.router'
 import webview from '@system.webview'
 
 export default {
-  private: {
-    title: '我的',
-    username: '周小艺',
-    agreementUrl: 'https://api.51dsp.cn/index/agreement.do?pn=com.nuanxintkjs.nxheartwarming',
-    privacyUrl: 'https://api.51dsp.cn/index/privacy.do?pn=com.nuanxintkjs.nxheartwarming'
+  data() {
+    return {
+      title: '我的',
+      username: '周小艺',
+      agreementUrl:
+        'https://api.51dsp.cn/index/agreement.do?pn=com.nuanxintkjs.nxheartwarming',
+      privacyUrl:
+        'https://api.51dsp.cn/index/privacy.do?pn=com.nuanxintkjs.nxheartwarming'
+    }
   },
-  onInit() {
-    this.$page.setTitleBar({ text: '我的' })
-  },
+  onInit() {},
   openAgreement() {
     router.push({
       uri: '/pages/Web',
@@ -98,169 +73,101 @@ export default {
         title: '隐私政策'
       }
     })
-  },
-  switchTab(page) {
-    if (page === 'wallpaper') router.replace({ uri: '/pages/Wallpaper' })
-    if (page === 'avatar') router.replace({ uri: '/pages/Avatar' })
-    if (page === 'favorites') router.replace({ uri: '/pages/Favorites' })
-    // 已经在我的页，不需要跳转
   }
 }
 </script>
 
 <style>
-  .container {
-    flex-direction: column;
-    flex: 1;
-    background-color: #0a1520;
-  }
-  
-  .bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  /* 用户信息区域 */
-  .user-section {
-    padding-top: 80px;
-    padding-bottom: 60px;
-    padding-left: 60px;
-  }
-  
-  .user-info {
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  .avatar-wrapper {
-    width: 120px;
-    height: 120px;
-    border-radius: 60px;
-    overflow: hidden;
-    border-width: 3px;
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-  
-  .avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .username {
-    font-size: 42px;
-    font-weight: bold;
-    color: #ffffff;
-    margin-left: 30px;
-  }
-  
-  /* 其他服务区域 */
-  .services-section {
-    padding: 0 60px;
-  }
-  
-  .section-title {
-    font-size: 32px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 30px;
-  }
-  
-  .service-card {
-    background-color: rgba(40, 60, 80, 0.6);
-    border-radius: 30px;
-    padding: 0 40px;
-  }
-  
-  .service-item {
-    height: 140px;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .service-left {
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  .icon-wrapper {
-    width: 60px;
-    height: 60px;
-    border-radius: 15px;
-    justify-content: center;
-    align-items: center;
-    margin-right: 25px;
-  }
-  
-  .agreement-icon {
-    background-color: rgba(100, 200, 250, 0.3);
-  }
-  
-  .privacy-icon {
-    background-color: rgba(100, 200, 150, 0.3);
-  }
-  
-  .icon-text {
-    font-size: 36px;
-  }
-  
-  .service-text {
-    font-size: 34px;
-    color: #ffffff;
-  }
-  
-  .arrow-text {
-    font-size: 50px;
-    color: rgba(255, 255, 255, 0.5);
-    font-weight: 100;
-  }
-  
-  .divider {
-    height: 1px;
-    background-color: rgba(255, 255, 255, 0.1);
-    margin-left: 85px;
-  }
-  
-  /* 底部导航栏样式 */
-  .tab-bar {
-    height: 150px;
-    width: 100%;
-    background-color: rgba(20, 30, 40, 0.95);
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border-top-width: 1px;
-    border-top-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .tab-bar .tab-item {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-  }
-  
-  .tab-bar .tab-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 8px;
-  }
-  
-  .tab-bar .tab-text {
-    font-size: 24px;
-    color: rgba(255, 255, 255, 0.6);
-  }
-  
-  .tab-bar .tab-text.active {
-    color: #64c8b4;
-  }
+.page-container {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content-wrapper {
+  flex: 1;
+  flex-direction: column;
+  padding: 0 7px;
+}
+
+.user-info {
+  flex-direction: row;
+  align-items: center;
+  margin-top: 58px;
+  margin-bottom: 35px;
+  padding-left: 0;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  margin-right: 6px;
+}
+
+.username {
+  font-size: 10px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.section-title {
+  font-size: 7px;
+  color: #ffffff;
+  font-weight: 500;
+  margin-bottom: 7px;
+  margin-left: 0;
+}
+
+.service-card {
+  background-color: rgba(44, 62, 80, 0.6);
+  border-radius: 7px;
+  padding: 0 9px;
+  flex-direction: column;
+}
+
+.service-item {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 28px;
+}
+
+.item-left {
+  flex-direction: row;
+  align-items: center;
+}
+
+.item-icon {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  object-fit: contain;
+}
+
+.item-text {
+  font-size: 7px;
+  color: #ffffff;
+  font-weight: 400;
+}
+
+.arrow-icon {
+  width: 6px;
+  height: 6px;
+  object-fit: contain;
+  opacity: 0.5;
+}
+
+.divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0;
+  margin-left: 17px;
+}
 </style>

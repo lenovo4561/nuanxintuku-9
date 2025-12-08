@@ -1,0 +1,39 @@
+{
+  "app": {
+    "name": "暖心图库"
+  },
+  "tabs": {
+    "wallpaper": "壁纸",
+    "avatar": "头像",
+    "favorite": "收藏",
+    "mine": "我的"
+  },
+  "categories": {
+    "latest": "最新",
+    "hot": "热门",
+    "anime": "动漫",
+    "character": "人物",
+    "pet": "萌宠",
+    "nature": "自然"
+  },
+  "actions": {
+    "download": "下载",
+    "like": "收藏",
+    "liked": "已收藏",
+    "agree": "同意并继续",
+    "disagree": "不同意"
+  },
+  "messages": {
+    "noFavorites": "暂无收藏~",
+    "downloadStart": "开始下载...",
+    "downloadSuccess": "下载成功",
+    "downloadFail": "下载失败",
+    "addedToFavorites": "已添加到收藏",
+    "removedFromFavorites": "已取消收藏"
+  },
+  "privacy": {
+    "title": "用户协议及隐私政策",
+    "userAgreement": "用户协议",
+    "privacyPolicy": "隐私政策"
+  }
+}

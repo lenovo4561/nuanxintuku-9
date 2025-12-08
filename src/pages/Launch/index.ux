@@ -4,7 +4,7 @@
   <div class="container">
     <image class="bg" src="/assets/img/loading-bg.png"></image>
     <div class="content">
-      <image class="logo" src="/assets/img/loading-icon.png"></image>
+      <image class="logo" src="/assets/img/logo-1.png"></image>
     </div>
 
     <privacy-modal
@@ -30,10 +30,10 @@ export default {
       key: 'agreed_privacy',
       success: data => {
         if (data === 'true') {
-          // 已同意，延迟跳转
+          // 已同意，缩短延迟避免闪烁
           setTimeout(() => {
             this.goHome()
-          }, 2000)
+          }, 800)
         } else {
           // 未同意，显示模态框
           this.showPrivacy = true
@@ -55,7 +55,7 @@ export default {
   },
   goHome() {
     router.replace({
-      uri: '/pages/Wallpaper'
+      uri: '/pages/Home'
     })
   }
 }
@@ -63,10 +63,12 @@ export default {
 
 <style>
 .container {
-  flex: 1;
+  width: 100%;
+  height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #000000;
 }
 
 .bg {
@@ -86,8 +88,8 @@ export default {
 }
 
 .logo {
-  width: 200px;
-  height: 200px;
+  width: 46px;
+  height: 46px;
   object-fit: contain;
 }
 </style>

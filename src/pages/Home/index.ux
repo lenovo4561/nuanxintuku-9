@@ -1,0 +1,135 @@
+<import name="wallpaper-tab" src="./../Wallpaper/index.ux"></import>
+<import name="avatar-tab" src="./../Avatar/index.ux"></import>
+<import name="favorites-tab" src="./../Favorites/index.ux"></import>
+<import name="mine-tab" src="./../Mine/index.ux"></import>
+
+<template>
+  <div class="wrapper">
+    <!-- 内容区域 -->
+    <div class="content-area">
+      <wallpaper-tab
+        class="tab-content"
+        show="{{currentTab === 0}}"
+      ></wallpaper-tab>
+      <avatar-tab class="tab-content" show="{{currentTab === 1}}"></avatar-tab>
+      <favorites-tab
+        class="tab-content"
+        show="{{currentTab === 2}}"
+      ></favorites-tab>
+      <mine-tab class="tab-content" show="{{currentTab === 3}}"></mine-tab>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="tab-bar">
+      <div class="tab-item" onclick="switchTab(0)">
+        <image
+          class="tab-icon"
+          src="{{currentTab === 0 ? '/assets/img/bizhi-s.png' : '/assets/img/bizhi-u.png'}}"
+        ></image>
+        <text class="tab-text {{currentTab === 0 ? 'active' : ''}}">壁纸</text>
+      </div>
+      <div class="tab-item" onclick="switchTab(1)">
+        <image
+          class="tab-icon"
+          src="{{currentTab === 1 ? '/assets/img/touxiang-s.png' : '/assets/img/touxiang-u.png'}}"
+        ></image>
+        <text class="tab-text {{currentTab === 1 ? 'active' : ''}}">头像</text>
+      </div>
+      <div class="tab-item" onclick="switchTab(2)">
+        <image
+          class="tab-icon"
+          src="{{currentTab === 2 ? '/assets/img/shoucang-s.png' : '/assets/img/shoucang-u.png'}}"
+        ></image>
+        <text class="tab-text {{currentTab === 2 ? 'active' : ''}}">收藏</text>
+      </div>
+      <div class="tab-item" onclick="switchTab(3)">
+        <image
+          class="tab-icon"
+          src="{{currentTab === 3 ? '/assets/img/mine-s.png' : '/assets/img/mine-u.png'}}"
+        ></image>
+        <text class="tab-text {{currentTab === 3 ? 'active' : ''}}">我的</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data: {
+    currentTab: 0
+  },
+
+  onInit() {
+    console.log('Home page initialized')
+  },
+
+  switchTab(index) {
+    console.log('switchTab called, index:', index)
+    this.currentTab = index
+  }
+}
+</script>
+
+<style>
+.wrapper {
+  flex: 1;
+  flex-direction: column;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+}
+
+.content-area {
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.tab-content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tab-bar {
+  position: fixed;
+  bottom: 9px;
+  left: 0;
+  right: 0;
+  margin-left: 3px;
+  margin-right: 3px;
+  height: 32px;
+  background-color: #0e1b23;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 16px;
+}
+
+.tab-item {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+}
+
+.tab-icon {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+  margin-bottom: 2px;
+}
+
+.tab-text {
+  font-size: 6px;
+  color: #999999;
+}
+
+.tab-text.active {
+  color: #ffffff;
+}
+</style>

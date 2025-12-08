@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <image class="bg" src="/assets/img/bg.png"></image>
-    
+
     <list class="list">
       <!-- 顶部 Logo -->
       <list-item type="header" class="header">
@@ -10,14 +10,12 @@
 
       <!-- 分类区域 -->
       <list-item type="categories" class="categories">
-        <div class="category-item" for="{{categoryList}}" onclick="openCategory($item)">
-           <stack class="category-stack">
-              <div class="category-placeholder"></div>
-              <div class="category-text-wrap">
-                <text class="category-title">{{$item.title}}</text>
-                <text class="category-desc">{{$item.desc}}</text>
-              </div>
-           </stack>
+        <div
+          class="category-item"
+          for="{{categoryList}}"
+          onclick="openCategory($item)"
+        >
+          <image class="category-image" src="{{$item.imageUrl}}"></image>
         </div>
       </list-item>
 
@@ -28,44 +26,31 @@
 
       <!-- 最新壁纸列表 -->
       <list-item type="wallpapers" class="wallpaper-grid">
-        <div class="wallpaper-item" for="{{wallpaperList}}" onclick="openWallpaper($item)">
-           <stack class="wallpaper-stack">
-             <div class="wallpaper-placeholder"></div>
-             
-             <!-- 最新标签 -->
-             <div class="new-tag-wrap" if="{{$item.isNew}}">
-                <stack class="new-tag-stack">
-                  <image class="new-tag-bg" src="/assets/img/biaoqianbg.png"></image>
-                  <text class="new-tag-text">最新</text>
-                </stack>
-             </div>
-           </stack>
+        <div
+          class="wallpaper-item"
+          for="{{wallpaperList}}"
+          onclick="openWallpaper($item)"
+        >
+          <stack class="wallpaper-stack">
+            <image class="wallpaper-image" src="{{$item.imageUrl}}"></image>
+
+            <!-- 最新标签 -->
+            <div class="new-tag-wrap" if="{{$item.isNew}}">
+              <stack class="new-tag-stack">
+                <image
+                  class="new-tag-bg"
+                  src="/assets/img/biaoqianbg.png"
+                ></image>
+                <text class="new-tag-text">最新</text>
+              </stack>
+            </div>
+          </stack>
         </div>
       </list-item>
-      
-      <!-- 底部占位，防止被导航栏遮挡 -->
-      <list-item type="spacer" style="height: 150px;"></list-item>
-    </list>
 
-    <!-- 底部导航栏 -->
-    <div class="tab-bar">
-       <div class="tab-item" onclick="switchTab('wallpaper')">
-          <image class="tab-icon" src="/assets/img/bizhi-s.png"></image>
-          <text class="tab-text active">壁纸</text>
-       </div>
-       <div class="tab-item" onclick="switchTab('avatar')">
-          <image class="tab-icon" src="/assets/img/touxiang-u.png"></image>
-          <text class="tab-text">头像</text>
-       </div>
-       <div class="tab-item" onclick="switchTab('favorites')">
-          <image class="tab-icon" src="/assets/img/shoucang-u.png"></image>
-          <text class="tab-text">收藏</text>
-       </div>
-       <div class="tab-item" onclick="switchTab('mine')">
-          <image class="tab-icon" src="/assets/img/mine-u.png"></image>
-          <text class="tab-text">我的</text>
-       </div>
-    </div>
+      <!-- 底部占位，防止被导航栏遮挡 -->
+      <list-item type="spacer" style="height: 46px;"></list-item>
+    </list>
   </div>
 </template>
 
@@ -73,30 +58,80 @@
 import router from '@system.router'
 
 export default {
-  private: {
-    categoryList: [
-      { title: '动漫', desc: '动漫萌系，治愈日常' },
-      { title: '人物', desc: '人物写真，简约高级' },
-      { title: '萌宠', desc: '萌宠憨态，治愈满分' },
-      { title: '自然', desc: '自然云海，浪漫梦幻' }
-    ],
-    wallpaperList: [
-      { id: 'wp_001', imageUrl: '/assets/img/bg.png', isNew: true },
-      { id: 'wp_002', imageUrl: '/assets/img/bg.png', isNew: true },
-      { id: 'wp_003', imageUrl: '/assets/img/bg.png', isNew: false },
-      { id: 'wp_004', imageUrl: '/assets/img/bg.png', isNew: false },
-      { id: 'wp_005', imageUrl: '/assets/img/bg.png', isNew: false },
-      { id: 'wp_006', imageUrl: '/assets/img/bg.png', isNew: false }
-    ]
+  data() {
+    return {
+      categoryList: [
+        {
+          title: '动漫',
+          desc: '动漫萌系，治愈日常',
+          imageUrl: '/assets/img/ziran.png',
+          type: 'dongman'
+        },
+        {
+          title: '人物',
+          desc: '人物写真，简约高级',
+          imageUrl: '/assets/img/Frame 1000005679.png',
+          type: 'renwu'
+        },
+        {
+          title: '萌宠',
+          desc: '萌宠憨态，治愈满分',
+          imageUrl: '/assets/img/Frame 1000005680.png',
+          type: 'mengchong'
+        },
+        {
+          title: '自然',
+          desc: '自然云海，浪漫梦幻',
+          imageUrl: '/assets/img/Frame 1000005681.png',
+          type: 'ziran'
+        }
+      ],
+      wallpaperList: [
+        {
+          id: 'test_1',
+          imageUrl: 'https://cdn.shijinzhuang.com/qcloud/bz/zx/1.jpg',
+          isNew: true
+        },
+        {
+          id: 'test_2',
+          imageUrl: 'https://cdn.shijinzhuang.com/qcloud/bz/zx/2.jpg',
+          isNew: true
+        },
+        {
+          id: 'test_3',
+          imageUrl: 'https://cdn.shijinzhuang.com/qcloud/bz/zx/3.jpg',
+          isNew: false
+        }
+      ]
+    }
   },
   onInit() {
-    this.$page.setTitleBar({ text: '壁纸' })
+    console.log('Wallpaper tab onInit called')
+    console.log('Initial wallpaperList:', this.wallpaperList)
+    this.loadLatestWallpapers()
+  },
+  loadLatestWallpapers() {
+    console.log('loadLatestWallpapers called')
+    // 加载最新壁纸（1-20张）
+    const list = []
+    const baseUrl = 'https://cdn.shijinzhuang.com/qcloud/bz/zx/'
+    for (let i = 1; i <= 20; i++) {
+      list.push({
+        id: `wp_${i}`,
+        imageUrl: `${baseUrl}${i}.jpg`,
+        isNew: true
+      })
+    }
+    console.log('wallpaperList length:', list.length)
+    this.wallpaperList = list
+    console.log('this.wallpaperList:', this.wallpaperList)
   },
   openCategory(item) {
     router.push({
       uri: '/pages/CategoryList',
       params: {
-        title: item.title
+        title: item.title,
+        type: item.type
       }
     })
   },
@@ -108,173 +143,148 @@ export default {
         itemId: item.id
       }
     })
-  },
-  switchTab(page) {
-    if (page === 'wallpaper') return;
-    if (page === 'avatar') router.replace({ uri: '/pages/Avatar' });
-    if (page === 'favorites') router.replace({ uri: '/pages/Favorites' });
-    if (page === 'mine') router.replace({ uri: '/pages/Mine' });
   }
 }
 </script>
 
 <style>
-  .container {
-    flex-direction: column;
-    flex: 1;
-  }
-  .bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .list {
-    flex: 1;
-    flex-direction: column;
-  }
-  
-  /* Header */
-  .header {
-    justify-content: center;
-    padding-top: 50px;
-    padding-bottom: 30px;
-  }
-  .top-logo {
-    height: 80px;
-    object-fit: contain;
-  }
+.container {
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background-color: #0e1b23;
+  overflow: hidden;
+}
+.bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.list {
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  background-color: transparent;
+}
 
-  /* Categories */
-  .categories {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 0 30px;
-  }
-  .category-item {
-    width: 490px;
-    height: 240px;
-    margin-bottom: 30px;
-    border-radius: 20px;
-    overflow: hidden;
-  }
-  .category-stack {
-    width: 100%;
-    height: 100%;
-  }
-  .category-placeholder {
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-  .category-text-wrap {
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 20px;
-    width: 100%;
-    height: 100%;
-  }
-  .category-title {
-    font-size: 36px;
-    font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 10px;
-  }
-  .category-desc {
-    font-size: 24px;
-    color: rgba(255, 255, 255, 0.8);
-  }
+/* Header */
+.header {
+  justify-content: center;
+  padding-top: 12px;
+  padding-bottom: 7px;
+}
+.top-logo {
+  height: 18px;
+  object-fit: contain;
+}
 
-  /* Section Title */
-  .section-title-wrap {
-    padding: 30px;
-    justify-content: center;
-  }
-  .section-title {
-    font-size: 36px;
-    font-weight: bold;
-    color: #ffffff;
-    text-align: center;
-  }
+/* Categories */
+.categories {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 0 7px;
+  overflow: hidden;
+}
+.category-item {
+  width: 113px;
+  height: 56px;
+  margin-bottom: 7px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.category-stack {
+  width: 100%;
+  height: 100%;
+}
+.category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.category-text-wrap {
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 5px;
+  width: 100%;
+  height: 100%;
+}
+.category-title {
+  font-size: 8px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+.category-desc {
+  font-size: 6px;
+  color: rgba(255, 255, 255, 0.8);
+}
 
-  /* Wallpapers */
-  .wallpaper-grid {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 0 30px;
-  }
-  .wallpaper-item {
-    width: 490px;
-    height: 650px;
-    margin-bottom: 30px;
-    border-radius: 20px;
-    overflow: hidden;
-  }
-  .wallpaper-stack {
-    width: 100%;
-    height: 100%;
-  }
-  .wallpaper-placeholder {
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.3);
-  }
-  
-  /* New Tag */
-  .new-tag-wrap {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-  }
-  .new-tag-stack {
-    align-items: center;
-    justify-content: center;
-  }
-  .new-tag-bg {
-    width: 80px;
-    height: 40px;
-  }
-  .new-tag-text {
-    font-size: 20px;
-    color: #000000;
-    font-weight: bold;
-  }
-  /* Tab Bar */
-  .tab-bar {
-    width: 100%;
-    height: 150px;
-    background-color: rgba(0, 0, 0, 0.8);
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    position: fixed;
-    bottom: 0;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-  }
-  .tab-item {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 150px;
-  }
-  .tab-icon {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    margin-bottom: 10px;
-  }
-  .tab-text {
-    font-size: 24px;
-    color: #999999;
-  }
-  .tab-text.active {
-    color: #ffffff;
-  }
+/* Section Title */
+.section-title-wrap {
+  padding: 7px;
+  justify-content: center;
+}
+.section-title {
+  font-size: 8px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* Wallpapers */
+.wallpaper-grid {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 0 7px;
+  overflow: hidden;
+}
+.wallpaper-item {
+  width: 113px;
+  height: 150px;
+  margin-bottom: 7px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.wallpaper-stack {
+  width: 100%;
+  height: 100%;
+}
+.wallpaper-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wallpaper-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* New Tag */
+.new-tag-wrap {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+.new-tag-stack {
+  align-items: center;
+  justify-content: center;
+}
+.new-tag-bg {
+  width: 18px;
+  height: 9px;
+}
+.new-tag-text {
+  font-size: 5px;
+  color: #000000;
+  font-weight: bold;
+}
 </style>

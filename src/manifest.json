@@ -23,6 +23,12 @@
     },
     {
       "name": "system.webview"
+    },
+    {
+      "name": "system.request"
+    },
+    {
+      "name": "system.media"
     }
   ],
   "permissions": [
@@ -33,12 +39,15 @@
   "template/official": "demo-template",
   "config": {
     "logLevel": "debug",
-    "designWidth": 1080
+    "designWidth": 250
   },
   "router": {
     "entry": "pages/Launch",
     "pages": {
       "pages/Launch": {
+        "component": "index"
+      },
+      "pages/Home": {
         "component": "index"
       },
       "pages/Wallpaper": {
@@ -48,6 +57,9 @@
         "component": "index"
       },
       "pages/Avatar": {
+        "component": "index"
+      },
+      "pages/AvatarDetail": {
         "component": "index"
       },
       "pages/Favorites": {
@@ -74,12 +86,31 @@
     "titleBarBackgroundColor": "#f2f2f2",
     "titleBarTextColor": "#414141",
     "menu": true,
+    "backgroundColor": "#0e1b23",
     "pages": {
       "pages/Launch": {
-        "titleBar": false
+        "titleBar": false,
+        "backgroundColor": "#0e1b23"
+      },
+      "pages/Wallpaper": {
+        "titleBar": false,
+        "backgroundColor": "#0e1b23"
       },
       "pages/CategoryList": {
-        "titleBar": false
+        "titleBar": false,
+        "backgroundColor": "#0e1b23"
+      },
+      "pages/WallpaperDetail": {
+        "titleBar": false,
+        "backgroundColor": "#0e1b23"
+      },
+      "pages/AvatarDetail": {
+        "titleBar": false,
+        "backgroundColor": "#0e1b23"
+      },
+      "pages/Favorites": {
+        "titleBar": false,
+        "backgroundColor": "#0e1b23"
       },
       "pages/Web": {
         "titleBarText": "详情"
@@ -90,38 +121,17 @@
       },
       "pages/DemoDetail": {
         "titleBarText": "详情页"
+      },
+      "pages/Home": {
+        "titleBar": false,
+        "backgroundColor": "#0e1b23"
+      },
+      "pages/Avatar": {
+        "backgroundColor": "#0e1b23"
+      },
+      "pages/Mine": {
+        "backgroundColor": "#0e1b23"
       }
-    },
-    "tabBar": {
-      "color": "#bbbbbb",
-      "selectedColor": "#000000",
-      "backgroundColor": "#ffffff",
-      "list": [
-        {
-          "pagePath": "pages/Wallpaper",
-          "text": "壁纸",
-          "iconPath": "assets/img/bizhi-u.png",
-          "selectedIconPath": "assets/img/bizhi-s.png"
-        },
-        {
-          "pagePath": "pages/Avatar",
-          "text": "头像",
-          "iconPath": "assets/img/touxiang-u.png",
-          "selectedIconPath": "assets/img/touxiang-s.png"
-        },
-        {
-          "pagePath": "pages/Favorites",
-          "text": "收藏",
-          "iconPath": "assets/img/shoucang-u.png",
-          "selectedIconPath": "assets/img/shoucang-s.png"
-        },
-        {
-          "pagePath": "pages/Mine",
-          "text": "我的",
-          "iconPath": "assets/img/mine-u.png",
-          "selectedIconPath": "assets/img/mine-s.png"
-        }
-      ]
     }
   },
   "deviceTypeList": ["phone"]

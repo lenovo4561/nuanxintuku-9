@@ -16,14 +16,17 @@
     <div class="bottom-bar">
       <!-- 下载按钮 -->
       <div class="action-btn download-btn" onclick="downloadAvatar">
-        <image class="btn-icon" src="/assets/img/xiazai.png"></image>
+        <image class="btn-icon" src="/assets/img/download.png"></image>
         <text class="btn-text">下载</text>
       </div>
-      
+
       <!-- 喜欢按钮 -->
       <div class="action-btn like-btn" onclick="toggleLike">
-        <image class="btn-icon" src="{{isLiked ? '/assets/img/like-s.png' : '/assets/img/like-s.png'}}"></image>
-        <text class="btn-text">{{isLiked ? '已喜欢' : '喜欢'}}</text>
+        <image
+          class="btn-icon"
+          src="{{isLiked ? '/assets/img/like-s.png' : '/assets/img/like-u.png'}}"
+        ></image>
+        <text class="btn-text">{{ isLiked ? '已收藏' : '收藏' }}</text>
       </div>
     </div>
   </div>
@@ -33,6 +36,8 @@
 import router from '@system.router'
 import prompt from '@system.prompt'
 import storage from '@system.storage'
+import request from '@system.request'
+import media from '@system.media'
 
 export default {
   protected: {
@@ -42,7 +47,7 @@ export default {
   },
   onInit() {
     if (!this.imageUrl) {
-      this.imageUrl = '/assets/img/bg.png';
+      this.imageUrl = '/assets/img/bg.png'
     }
     // 检查是否已收藏
     this.checkIfLiked()
@@ -50,7 +55,7 @@ export default {
   checkIfLiked() {
     storage.get({
       key: 'avatar_favorites',
-      success: (data) => {
+      success: data => {
         const favorites = JSON.parse(data || '[]')
         this.isLiked = favorites.some(item => item.imageUrl === this.imageUrl)
       },
@@ -63,18 +68,64 @@ export default {
     router.back()
   },
   downloadAvatar() {
+    const self = this
     prompt.showToast({
       message: '开始下载...'
     })
-    // TODO: 实现下载逻辑
+
+    // 对 URL 中的空格进行编码
+    const encodedUrl = self.imageUrl.replace(/\s/g, '%20')
+
+    request.download({
+      url: encodedUrl,
+      success: function(data) {
+        console.info('Download success, token:', data.token)
+        // 处理下载完成的文件
+        request.onDownloadComplete({
+          token: data.token,
+          success: function(ret) {
+            console.info('Download complete, path:', ret.uri)
+            // 保存到相册
+            media.saveToPhotosAlbum({
+              uri: ret.uri,
+              success: function() {
+                prompt.showToast({
+                  message: '下载成功'
+                })
+              },
+              fail: function(data, code) {
+                console.error('Save to album failed:', data, code)
+                prompt.showToast({
+                  message: '保存失败，请检查权限'
+                })
+              }
+            })
+          },
+          fail: function(data, code) {
+            console.error('Download complete check failed:', data, code)
+            prompt.showToast({
+              message: '下载失败'
+            })
+          }
+        })
+      },
+      fail: function(data, code) {
+        console.error('Download request failed:', data, code)
+        prompt.showToast({
+          message: '下载请求失败: ' + code
+        })
+      }
+    })
   },
   toggleLike() {
     storage.get({
       key: 'avatar_favorites',
-      success: (data) => {
+      success: data => {
         let favorites = JSON.parse(data || '[]')
-        const index = favorites.findIndex(item => item.imageUrl === this.imageUrl)
-        
+        const index = favorites.findIndex(
+          item => item.imageUrl === this.imageUrl
+        )
+
         if (index > -1) {
           // 已收藏，取消收藏
           favorites.splice(index, 1)
@@ -95,7 +146,7 @@ export default {
             message: '已添加到收藏'
           })
         }
-        
+
         // 保存到 localStorage
         storage.set({
           key: 'avatar_favorites',
@@ -104,12 +155,14 @@ export default {
       },
       fail: () => {
         // 第一次收藏
-        const favorites = [{
-          imageUrl: this.imageUrl,
-          itemId: this.itemId,
-          type: 'avatar',
-          timestamp: Date.now()
-        }]
+        const favorites = [
+          {
+            imageUrl: this.imageUrl,
+            itemId: this.itemId,
+            type: 'avatar',
+            timestamp: Date.now()
+          }
+        ]
         this.isLiked = true
         storage.set({
           key: 'avatar_favorites',
@@ -125,83 +178,87 @@ export default {
 </script>
 
 <style>
-  .container {
-    flex-direction: column;
-    flex: 1;
-    background-color: #0e1b23;
-  }
+.container {
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #0e1b23;
+  overflow: hidden;
+}
 
-  .nav-bar {
-    height: 120px;
-    padding-left: 30px;
-    padding-top: 30px;
-    justify-content: flex-start;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10;
-  }
+.nav-bar {
+  height: 28px;
+  padding-left: 7px;
+  padding-top: 7px;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
 
-  .back-btn {
-    width: 80px;
-    height: 80px;
-    border-radius: 40px;
-    background-color: rgba(255, 255, 255, 0.2);
-    justify-content: center;
-    align-items: center;
-  }
+.back-btn {
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  background-color: rgba(255, 255, 255, 0.2);
+  justify-content: center;
+  align-items: center;
+}
 
-  .back-icon {
-    width: 40px;
-    height: 40px;
-  }
+.back-icon {
+  width: 9px;
+  height: 9px;
+}
 
-  .image-container {
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
-    margin-top: 100px;
-    margin-bottom: 50px;
-  }
+.image-container {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 7px;
+  margin-top: 23px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
 
-  .avatar-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-  }
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  object-fit: contain;
+}
 
-  .bottom-bar {
-    height: 200px;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 60px;
-    padding-bottom: 50px;
-  }
+.bottom-bar {
+  height: 46px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 14px;
+  padding-bottom: 12px;
+}
 
-  .action-btn {
-    width: 300px;
-    height: 110px;
-    background-color: #9bfad9;
-    border-radius: 55px;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
+.action-btn {
+  width: 69px;
+  height: 25px;
+  background-color: #9bfad9;
+  border-radius: 13px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 
-  .btn-icon {
-    width: 40px;
-    height: 40px;
-    margin-right: 15px;
-    object-fit: contain;
-  }
+.btn-icon {
+  width: 9px;
+  height: 9px;
+  margin-right: 3px;
+  object-fit: contain;
+}
 
-  .btn-text {
-    font-size: 36px;
-    color: #000000;
-    font-weight: bold;
-  }
+.btn-text {
+  font-size: 8px;
+  color: #000000;
+  font-weight: bold;
+}
 </style>
