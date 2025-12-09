@@ -71,13 +71,20 @@ export default {
     return {
       title: '收藏',
       currentTab: 'wallpaper',
-      favoritesList: []
+      favoritesList: [],
+      isVisible: false
     }
   },
   onInit() {
     // 隐藏系统标题栏，使用自定义标题
     // manifest.json 中也已配置 titleBar: false
     this.loadFavorites()
+    
+    // 监听广播事件
+    this.$on('refreshFavorites', () => {
+      console.log('Received refreshFavorites event')
+      this.loadFavorites()
+    })
   },
   onShow() {
     // 每次显示页面时重新加载收藏列表
@@ -208,15 +215,15 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding-left: 9px;
-  padding-right: 9px;
+  padding-left: 7px;
+  padding-right: 7px;
   overflow: hidden;
 }
 
 .grid-item {
-  width: 111px;
-  margin-bottom: 9px;
-  border-radius: 7px;
+  width: 113px;
+  margin-bottom: 7px;
+  border-radius: 5px;
   overflow: hidden;
 }
 

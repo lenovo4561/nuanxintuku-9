@@ -119,7 +119,8 @@ export default {
       list.push({
         id: `wp_${i}`,
         imageUrl: `${baseUrl}${i}.jpg`,
-        isNew: true
+        isNew: true,
+        category: '最新'
       })
     }
     console.log('wallpaperList length:', list.length)

@@ -100,7 +100,8 @@ export default {
       list.push({
         id: `av_${i}`,
         imageUrl: `${baseUrl}${i}.jpg`,
-        isNew: true
+        isNew: true,
+        category: '最新'
       })
     }
     this.wallpaperList = list

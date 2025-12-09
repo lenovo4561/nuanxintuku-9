@@ -15,6 +15,7 @@
       <favorites-tab
         class="tab-content"
         show="{{currentTab === 2}}"
+        id="favoritesTab"
       ></favorites-tab>
       <mine-tab class="tab-content" show="{{currentTab === 3}}"></mine-tab>
     </div>
@@ -65,7 +66,13 @@ export default {
 
   switchTab(index) {
     console.log('switchTab called, index:', index)
+    const oldTab = this.currentTab
     this.currentTab = index
+    
+    // 当切换到收藏页时，触发刷新
+    if (index === 2 && oldTab !== 2) {
+      this.$broadcast('refreshFavorites')
+    }
   }
 }
 </script>

@@ -22,13 +22,13 @@
           <stack class="wallpaper-stack">
             <image class="wallpaper-image" src="{{$item.src}}"></image>
 
-            <!-- 最新标签 -->
-            <stack class="new-tag-wrap" show="{{$item.isNew}}">
+            <!-- 分类标签 -->
+            <stack class="new-tag-wrap" show="{{$item.category}}">
               <image
                 class="new-tag-bg"
                 src="/pkg/assets/img/biaoqianbg.png"
               ></image>
-              <text class="new-tag-text">最新</text>
+              <text class="new-tag-text">{{$item.category}}</text>
             </stack>
           </stack>
         </div>
@@ -58,34 +58,44 @@ export default {
     const list = []
     let baseUrl = ''
     let isAvatar = false
+    let categoryName = ''
 
     // 根据类型设置对应的图片地址
     // 壁纸类型
     if (this.type === 'dongman') {
       baseUrl = 'https://cdn.shijinzhuang.com/qcloud/bz/dm/'
+      categoryName = '动漫'
     } else if (this.type === 'renwu') {
       baseUrl = 'https://cdn.shijinzhuang.com/qcloud/bz/rw/'
+      categoryName = '人物'
     } else if (this.type === 'mengchong') {
       baseUrl = 'https://cdn.shijinzhuang.com/qcloud/bz/mc/'
+      categoryName = '萌宠'
     } else if (this.type === 'ziran') {
       baseUrl = 'https://cdn.shijinzhuang.com/qcloud/bz/zr/'
+      categoryName = '自然'
     }
     // 头像类型
     else if (this.type === 'tx_dongman') {
       baseUrl = 'https://cdn.shijinzhuang.com/qcloud/tx/dm/'
       isAvatar = true
+      categoryName = '动漫'
     } else if (this.type === 'tx_renwu') {
       baseUrl = 'https://cdn.shijinzhuang.com/qcloud/tx/rw/'
       isAvatar = true
+      categoryName = '人物'
     } else if (this.type === 'tx_mengchong') {
       baseUrl = 'https://cdn.shijinzhuang.com/qcloud/tx/mc/'
       isAvatar = true
+      categoryName = '萌宠'
     } else if (this.type === 'tx_ziran') {
       baseUrl = 'https://cdn.shijinzhuang.com/qcloud/tx/zr/'
       isAvatar = true
+      categoryName = '自然'
     } else {
       // 默认使用壁纸动漫
       baseUrl = 'https://cdn.shijinzhuang.com/qcloud/bz/dm/'
+      categoryName = '动漫'
     }
 
     // 生成1-20的图片列表
@@ -93,7 +103,8 @@ export default {
       list.push({
         src: `${baseUrl}${i}.jpg`,
         isNew: i <= 3,
-        isAvatar: isAvatar
+        isAvatar: isAvatar,
+        category: categoryName
       })
     }
 

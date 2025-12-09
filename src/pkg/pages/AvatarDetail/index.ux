@@ -2,7 +2,7 @@
   <div class="container">
     <!-- 顶部导航 -->
     <div class="nav-bar">
-      <div class="back-btn" onclick="goBack">
+      <div class="back-btn" @click="goBack">
         <image class="back-icon" src="/pkg/assets/img/back.png"></image>
       </div>
     </div>
@@ -15,13 +15,13 @@
     <!-- 底部操作栏 -->
     <div class="bottom-bar">
       <!-- 下载按钮 -->
-      <div class="action-btn download-btn" onclick="downloadAvatar">
+      <div class="action-btn download-btn" @click="downloadAvatar">
         <image class="btn-icon" src="/pkg/assets/img/download.png"></image>
         <text class="btn-text">下载</text>
       </div>
 
       <!-- 喜欢按钮 -->
-      <div class="action-btn like-btn" onclick="toggleLike">
+      <div class="action-btn like-btn" @click="toggleLike">
         <image
           class="btn-icon"
           src="{{isLiked ? '/pkg/assets/img/like-s.png' : '/pkg/assets/img/like-u.png'}}"
