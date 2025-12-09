@@ -24,30 +24,30 @@
       <div class="tab-item" onclick="switchTab(0)">
         <image
           class="tab-icon"
-          src="{{currentTab === 0 ? '/assets/img/bizhi-s.png' : '/assets/img/bizhi-u.png'}}"
+          src="{{currentTab === 0 ? '/pkg/assets/img/bizhi-s.png' : '/pkg/assets/img/bizhi-u.png'}}"
         ></image>
-        <text class="tab-text {{currentTab === 0 ? 'active' : ''}}">壁纸</text>
+        <text class="{{currentTab === 0 ? 'tab-text-active' : 'tab-text'}}">壁纸</text>
       </div>
       <div class="tab-item" onclick="switchTab(1)">
         <image
           class="tab-icon"
-          src="{{currentTab === 1 ? '/assets/img/touxiang-s.png' : '/assets/img/touxiang-u.png'}}"
+          src="{{currentTab === 1 ? '/pkg/assets/img/touxiang-s.png' : '/pkg/assets/img/touxiang-u.png'}}"
         ></image>
-        <text class="tab-text {{currentTab === 1 ? 'active' : ''}}">头像</text>
+        <text class="{{currentTab === 1 ? 'tab-text-active' : 'tab-text'}}">头像</text>
       </div>
       <div class="tab-item" onclick="switchTab(2)">
         <image
           class="tab-icon"
-          src="{{currentTab === 2 ? '/assets/img/shoucang-s.png' : '/assets/img/shoucang-u.png'}}"
+          src="{{currentTab === 2 ? '/pkg/assets/img/shoucang-s.png' : '/pkg/assets/img/shoucang-u.png'}}"
         ></image>
-        <text class="tab-text {{currentTab === 2 ? 'active' : ''}}">收藏</text>
+        <text class="{{currentTab === 2 ? 'tab-text-active' : 'tab-text'}}">收藏</text>
       </div>
       <div class="tab-item" onclick="switchTab(3)">
         <image
           class="tab-icon"
-          src="{{currentTab === 3 ? '/assets/img/mine-s.png' : '/assets/img/mine-u.png'}}"
+          src="{{currentTab === 3 ? '/pkg/assets/img/mine-s.png' : '/pkg/assets/img/mine-u.png'}}"
         ></image>
-        <text class="tab-text {{currentTab === 3 ? 'active' : ''}}">我的</text>
+        <text class="{{currentTab === 3 ? 'tab-text-active' : 'tab-text'}}">我的</text>
       </div>
     </div>
   </div>
@@ -129,7 +129,8 @@ export default {
   color: #999999;
 }
 
-.tab-text.active {
+.tab-text-active {
+  font-size: 6px;
   color: #ffffff;
 }
 </style>

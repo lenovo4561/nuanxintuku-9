@@ -1,7 +1,7 @@
 <template>
   <stack class="page">
     <!-- 背景图 -->
-    <image class="bg-img" src="/assets/img/bg.png"></image>
+    <image class="bg-img" src="/pkg/assets/img/bg.png"></image>
 
     <!-- 内容区域 -->
     <div class="content">
@@ -55,7 +55,7 @@
 
       <!-- 空状态 -->
       <div class="empty-view" if="{{favoritesList.length === 0}}">
-        <image class="empty-img" src="/assets/img/kong.png"></image>
+        <image class="empty-img" src="/pkg/assets/img/kong.png"></image>
         <text class="empty-text">暂无图片~</text>
       </div>
     </div>
@@ -109,8 +109,8 @@ export default {
   openDetail(item) {
     const detailPage =
       item.type === 'wallpaper'
-        ? '/pages/WallpaperDetail'
-        : '/pages/AvatarDetail'
+        ? '/pkg/pages/WallpaperDetail'
+        : '/pkg/pages/AvatarDetail'
     router.push({
       uri: detailPage,
       params: {
@@ -207,7 +207,7 @@ export default {
   width: 100%;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   padding-left: 9px;
   padding-right: 9px;
   overflow: hidden;

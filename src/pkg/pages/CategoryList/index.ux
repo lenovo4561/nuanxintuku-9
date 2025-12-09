@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <image class="bg" src="/assets/img/bg.png"></image>
+    <image class="bg" src="/pkg/assets/img/bg.png"></image>
 
     <!-- 自定义顶部导航栏 -->
     <div class="title-bar">
       <div class="back-btn" @click="back">
-        <image class="back-icon" src="/assets/img/back.png"></image>
+        <image class="back-icon" src="/pkg/assets/img/back.png"></image>
       </div>
       <text class="page-title">{{ title }}</text>
       <div class="placeholder-btn"></div>
@@ -23,15 +23,13 @@
             <image class="wallpaper-image" src="{{$item.src}}"></image>
 
             <!-- 最新标签 -->
-            <div class="new-tag-wrap" if="{{$item.isNew}}">
-              <stack class="new-tag-stack">
-                <image
-                  class="new-tag-bg"
-                  src="/assets/img/biaoqianbg.png"
-                ></image>
-                <text class="new-tag-text">最新</text>
-              </stack>
-            </div>
+            <stack class="new-tag-wrap" show="{{$item.isNew}}">
+              <image
+                class="new-tag-bg"
+                src="/pkg/assets/img/biaoqianbg.png"
+              ></image>
+              <text class="new-tag-text">最新</text>
+            </stack>
           </stack>
         </div>
       </list-item>
@@ -103,8 +101,8 @@ export default {
   },
   openWallpaper(item) {
     const detailPage = item.isAvatar
-      ? '/pages/AvatarDetail'
-      : '/pages/WallpaperDetail'
+      ? '/pkg/pages/AvatarDetail'
+      : '/pkg/pages/WallpaperDetail'
     router.push({
       uri: detailPage,
       params: {
@@ -175,7 +173,7 @@ export default {
 .wallpaper-grid {
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 0 7px;
   overflow: hidden;
 }
@@ -211,8 +209,6 @@ export default {
   position: absolute;
   right: 5px;
   bottom: 5px;
-}
-.new-tag-stack {
   align-items: center;
   justify-content: center;
 }

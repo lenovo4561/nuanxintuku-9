@@ -38,7 +38,7 @@
   ],
   "template/official": "demo-template",
   "config": {
-    "logLevel": "debug",
+    "logLevel": "off",
     "designWidth": 250
   },
   "router": {
@@ -47,41 +47,41 @@
       "pages/Launch": {
         "component": "index"
       },
-      "pages/Home": {
+      "pkg/pages/Home": {
         "component": "index"
       },
-      "pages/Wallpaper": {
+      "pkg/pages/Wallpaper": {
         "component": "index"
       },
-      "pages/WallpaperDetail": {
+      "pkg/pages/WallpaperDetail": {
         "component": "index"
       },
-      "pages/Avatar": {
+      "pkg/pages/Avatar": {
         "component": "index"
       },
-      "pages/AvatarDetail": {
+      "pkg/pages/AvatarDetail": {
         "component": "index"
       },
-      "pages/Favorites": {
+      "pkg/pages/Favorites": {
         "component": "index"
       },
-      "pages/Mine": {
+      "pkg/pages/Mine": {
         "component": "index"
       },
-      "pages/Web": {
+      "pkg/pages/Web": {
         "component": "index"
       },
-      "pages/Demo": {
-        "component": "index"
-      },
-      "pages/DemoDetail": {
-        "component": "index"
-      },
-      "pages/CategoryList": {
+      "pkg/pages/CategoryList": {
         "component": "index"
       }
     }
   },
+  "subpackages": [
+    {
+      "name": "pkg",
+      "resource": "pkg"
+    }
+  ],
   "display": {
     "titleBarBackgroundColor": "#f2f2f2",
     "titleBarTextColor": "#414141",
@@ -92,44 +92,37 @@
         "titleBar": false,
         "backgroundColor": "#0e1b23"
       },
-      "pages/Wallpaper": {
+      "pkg/pages/Wallpaper": {
         "titleBar": false,
         "backgroundColor": "#0e1b23"
       },
-      "pages/CategoryList": {
+      "pkg/pages/CategoryList": {
         "titleBar": false,
         "backgroundColor": "#0e1b23"
       },
-      "pages/WallpaperDetail": {
+      "pkg/pages/WallpaperDetail": {
         "titleBar": false,
         "backgroundColor": "#0e1b23"
       },
-      "pages/AvatarDetail": {
+      "pkg/pages/AvatarDetail": {
         "titleBar": false,
         "backgroundColor": "#0e1b23"
       },
-      "pages/Favorites": {
+      "pkg/pages/Favorites": {
         "titleBar": false,
         "backgroundColor": "#0e1b23"
       },
-      "pages/Web": {
+      "pkg/pages/Web": {
         "titleBarText": "详情"
       },
-      "pages/Demo": {
-        "titleBarText": "快应用示例模版",
-        "menu": false
-      },
-      "pages/DemoDetail": {
-        "titleBarText": "详情页"
-      },
-      "pages/Home": {
+      "pkg/pages/Home": {
         "titleBar": false,
         "backgroundColor": "#0e1b23"
       },
-      "pages/Avatar": {
+      "pkg/pages/Avatar": {
         "backgroundColor": "#0e1b23"
       },
-      "pages/Mine": {
+      "pkg/pages/Mine": {
         "backgroundColor": "#0e1b23"
       }
     }

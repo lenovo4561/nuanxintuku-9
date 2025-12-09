@@ -2,7 +2,7 @@ import device from '@system.device'
 import app from '@system.app'
 import storage from '@system.storage'
 import $utils from './utils'
-import $apis from './apis/index'
+import $apis from './apis'
 
 /* @desc: 注入方法至全局 global,以便页面调用 */
 const hook2global = global.__proto__ || global

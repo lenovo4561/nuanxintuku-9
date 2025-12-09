@@ -9,13 +9,17 @@
 
     <!-- 图片区域 -->
     <div class="image-container">
-      <image class="avatar-img" src="{{imageUrl}}" object-fit="contain"></image>
+      <image
+        class="wallpaper-img"
+        src="{{imageUrl}}"
+        object-fit="cover"
+      ></image>
     </div>
 
     <!-- 底部操作栏 -->
     <div class="bottom-bar">
       <!-- 下载按钮 -->
-      <div class="action-btn download-btn" onclick="downloadAvatar">
+      <div class="action-btn download-btn" onclick="downloadWallpaper">
         <image class="btn-icon" src="/pkg/assets/img/download.png"></image>
         <text class="btn-text">下载</text>
       </div>
@@ -26,7 +30,7 @@
           class="btn-icon"
           src="{{isLiked ? '/pkg/assets/img/like-s.png' : '/pkg/assets/img/like-u.png'}}"
         ></image>
-        <text class="btn-text">{{ isLiked ? '已收藏' : '收藏' }}</text>
+        <text class="btn-text">{{ isLiked ? '已喜欢' : '喜欢' }}</text>
       </div>
     </div>
   </div>
@@ -47,6 +51,7 @@ export default {
   },
   onInit() {
     if (!this.imageUrl) {
+      // 默认图片用于预览
       this.imageUrl = '/pkg/assets/img/bg.png'
     }
     // 检查是否已收藏
@@ -54,7 +59,7 @@ export default {
   },
   checkIfLiked() {
     storage.get({
-      key: 'avatar_favorites',
+      key: 'wallpaper_favorites',
       success: data => {
         const favorites = JSON.parse(data || '[]')
         this.isLiked = favorites.some(item => item.imageUrl === this.imageUrl)
@@ -67,7 +72,7 @@ export default {
   goBack() {
     router.back()
   },
-  downloadAvatar() {
+  downloadWallpaper() {
     const self = this
     prompt.showToast({
       message: '开始下载...'
@@ -119,7 +124,7 @@ export default {
   },
   toggleLike() {
     storage.get({
-      key: 'avatar_favorites',
+      key: 'wallpaper_favorites',
       success: data => {
         let favorites = JSON.parse(data || '[]')
         const index = favorites.findIndex(
@@ -131,25 +136,25 @@ export default {
           favorites.splice(index, 1)
           this.isLiked = false
           prompt.showToast({
-            message: '已取消收藏'
+            message: '已取消喜欢'
           })
         } else {
           // 未收藏，添加收藏
           favorites.push({
             imageUrl: this.imageUrl,
             itemId: this.itemId,
-            type: 'avatar',
+            type: 'wallpaper',
             timestamp: Date.now()
           })
           this.isLiked = true
           prompt.showToast({
-            message: '已添加到收藏'
+            message: '已添加到喜欢'
           })
         }
 
         // 保存到 localStorage
         storage.set({
-          key: 'avatar_favorites',
+          key: 'wallpaper_favorites',
           value: JSON.stringify(favorites)
         })
       },
@@ -159,17 +164,17 @@ export default {
           {
             imageUrl: this.imageUrl,
             itemId: this.itemId,
-            type: 'avatar',
+            type: 'wallpaper',
             timestamp: Date.now()
           }
         ]
         this.isLiked = true
         storage.set({
-          key: 'avatar_favorites',
+          key: 'wallpaper_favorites',
           value: JSON.stringify(favorites)
         })
         prompt.showToast({
-          message: '已添加到收藏'
+          message: '已添加到喜欢'
         })
       }
     })
@@ -214,23 +219,27 @@ export default {
 }
 
 .image-container {
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  padding: 7px;
-  margin-top: 23px;
-  margin-bottom: 12px;
-  overflow: hidden;
-}
-
-.avatar-img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 5px;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+}
+
+.wallpaper-img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
 .bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 46px;
   flex-direction: row;
   justify-content: space-between;

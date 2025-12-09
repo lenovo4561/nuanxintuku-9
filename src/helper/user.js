@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import $ajax from '../ajax.js'
+import $ajax from './ajax'
 
 const baseUrl = 'https://quick.shijinzhuang.com/'
 

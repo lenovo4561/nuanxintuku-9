@@ -3,24 +3,20 @@
     <!-- 顶部导航 -->
     <div class="nav-bar">
       <div class="back-btn" onclick="goBack">
-        <image class="back-icon" src="/assets/img/back.png"></image>
+        <image class="back-icon" src="/pkg/assets/img/back.png"></image>
       </div>
     </div>
 
     <!-- 图片区域 -->
     <div class="image-container">
-      <image
-        class="wallpaper-img"
-        src="{{imageUrl}}"
-        object-fit="cover"
-      ></image>
+      <image class="avatar-img" src="{{imageUrl}}" object-fit="contain"></image>
     </div>
 
     <!-- 底部操作栏 -->
     <div class="bottom-bar">
       <!-- 下载按钮 -->
-      <div class="action-btn download-btn" onclick="downloadWallpaper">
-        <image class="btn-icon" src="/assets/img/download.png"></image>
+      <div class="action-btn download-btn" onclick="downloadAvatar">
+        <image class="btn-icon" src="/pkg/assets/img/download.png"></image>
         <text class="btn-text">下载</text>
       </div>
 
@@ -28,9 +24,9 @@
       <div class="action-btn like-btn" onclick="toggleLike">
         <image
           class="btn-icon"
-          src="{{isLiked ? '/assets/img/like-s.png' : '/assets/img/like-u.png'}}"
+          src="{{isLiked ? '/pkg/assets/img/like-s.png' : '/pkg/assets/img/like-u.png'}}"
         ></image>
-        <text class="btn-text">{{ isLiked ? '已喜欢' : '喜欢' }}</text>
+        <text class="btn-text">{{ isLiked ? '已收藏' : '收藏' }}</text>
       </div>
     </div>
   </div>
@@ -51,15 +47,14 @@ export default {
   },
   onInit() {
     if (!this.imageUrl) {
-      // 默认图片用于预览
-      this.imageUrl = '/assets/img/bg.png'
+      this.imageUrl = '/pkg/assets/img/bg.png'
     }
     // 检查是否已收藏
     this.checkIfLiked()
   },
   checkIfLiked() {
     storage.get({
-      key: 'wallpaper_favorites',
+      key: 'avatar_favorites',
       success: data => {
         const favorites = JSON.parse(data || '[]')
         this.isLiked = favorites.some(item => item.imageUrl === this.imageUrl)
@@ -72,7 +67,7 @@ export default {
   goBack() {
     router.back()
   },
-  downloadWallpaper() {
+  downloadAvatar() {
     const self = this
     prompt.showToast({
       message: '开始下载...'
@@ -124,7 +119,7 @@ export default {
   },
   toggleLike() {
     storage.get({
-      key: 'wallpaper_favorites',
+      key: 'avatar_favorites',
       success: data => {
         let favorites = JSON.parse(data || '[]')
         const index = favorites.findIndex(
@@ -136,25 +131,25 @@ export default {
           favorites.splice(index, 1)
           this.isLiked = false
           prompt.showToast({
-            message: '已取消喜欢'
+            message: '已取消收藏'
           })
         } else {
           // 未收藏，添加收藏
           favorites.push({
             imageUrl: this.imageUrl,
             itemId: this.itemId,
-            type: 'wallpaper',
+            type: 'avatar',
             timestamp: Date.now()
           })
           this.isLiked = true
           prompt.showToast({
-            message: '已添加到喜欢'
+            message: '已添加到收藏'
           })
         }
 
         // 保存到 localStorage
         storage.set({
-          key: 'wallpaper_favorites',
+          key: 'avatar_favorites',
           value: JSON.stringify(favorites)
         })
       },
@@ -164,17 +159,17 @@ export default {
           {
             imageUrl: this.imageUrl,
             itemId: this.itemId,
-            type: 'wallpaper',
+            type: 'avatar',
             timestamp: Date.now()
           }
         ]
         this.isLiked = true
         storage.set({
-          key: 'wallpaper_favorites',
+          key: 'avatar_favorites',
           value: JSON.stringify(favorites)
         })
         prompt.showToast({
-          message: '已添加到喜欢'
+          message: '已添加到收藏'
         })
       }
     })
@@ -219,27 +214,23 @@ export default {
 }
 
 .image-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  flex: 1;
   justify-content: center;
   align-items: center;
+  padding: 7px;
+  margin-top: 23px;
+  margin-bottom: 12px;
+  overflow: hidden;
 }
 
-.wallpaper-img {
+.avatar-img {
   width: 100%;
   height: 100%;
+  border-radius: 5px;
   object-fit: contain;
 }
 
 .bottom-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
   height: 46px;
   flex-direction: row;
   justify-content: space-between;

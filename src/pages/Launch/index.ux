@@ -2,9 +2,9 @@
 
 <template>
   <div class="container">
-    <image class="bg" src="/assets/img/loading-bg.png"></image>
+    <image class="bg" src="/pkg/assets/img/loading-bg.png"></image>
     <div class="content">
-      <image class="logo" src="/assets/img/logo-1.png"></image>
+      <image class="logo" src="/pkg/assets/img/logo-1.png"></image>
     </div>
 
     <privacy-modal
@@ -55,7 +55,7 @@ export default {
   },
   goHome() {
     router.replace({
-      uri: '/pages/Home'
+      uri: '/pkg/pages/Home'
     })
   }
 }

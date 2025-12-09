@@ -1,11 +1,11 @@
 <template>
   <stack class="page-container">
-    <image class="bg-image" src="/assets/img/mine-bg.png"></image>
+    <image class="bg-image" src="/pkg/assets/img/mine-bg.png"></image>
 
     <div class="content-wrapper">
       <!-- 用户信息区域 -->
       <div class="user-info">
-        <image class="avatar" src="/assets/img/a.png"></image>
+        <image class="avatar" src="/pkg/assets/img/a.png"></image>
         <text class="username">周小艺</text>
       </div>
 
@@ -16,11 +16,11 @@
           <div class="item-left">
             <image
               class="item-icon"
-              src="/assets/img/user-agreement.png"
+              src="/pkg/assets/img/user-agreement.png"
             ></image>
             <text class="item-text">用户协议</text>
           </div>
-          <image class="arrow-icon" src="/assets/img/arrow.png"></image>
+          <image class="arrow-icon" src="/pkg/assets/img/arrow.png"></image>
         </div>
 
         <div class="divider"></div>
@@ -29,11 +29,11 @@
           <div class="item-left">
             <image
               class="item-icon"
-              src="/assets/img/privacy-policy.png"
+              src="/pkg/assets/img/privacy-policy.png"
             ></image>
             <text class="item-text">隐私政策</text>
           </div>
-          <image class="arrow-icon" src="/assets/img/arrow.png"></image>
+          <image class="arrow-icon" src="/pkg/assets/img/arrow.png"></image>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@ export default {
   onInit() {},
   openAgreement() {
     router.push({
-      uri: '/pages/Web',
+      uri: '/pkg/pages/Web',
       params: {
         url: this.agreementUrl,
         title: '用户协议'
@@ -67,7 +67,7 @@ export default {
   },
   openPrivacy() {
     router.push({
-      uri: '/pages/Web',
+      uri: '/pkg/pages/Web',
       params: {
         url: this.privacyUrl,
         title: '隐私政策'

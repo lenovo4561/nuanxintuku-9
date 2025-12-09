@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="mask" if="{{show}}">
       <div class="modal-container">
-        <image class="logo" src="/assets/img/loading-icon.png"></image>
+        <image class="logo" src="/pkg/assets/img/loading-icon.png"></image>
         <text class="app-name">暖心图库</text>
 
         <div class="agreement-wrap">
@@ -48,7 +48,7 @@ export default {
   },
   openAgreement() {
     router.push({
-      uri: '/pages/Web',
+      uri: '/pkg/pages/Web',
       params: {
         url:
           'https://api.51dsp.cn/index/agreement.do?pn=com.nuanxintkjs.nxheartwarming',
@@ -58,7 +58,7 @@ export default {
   },
   openPrivacy() {
     router.push({
-      uri: '/pages/Web',
+      uri: '/pkg/pages/Web',
       params: {
         url:
           'https://api.51dsp.cn/index/privacy.do?pn=com.nuanxintkjs.nxheartwarming',

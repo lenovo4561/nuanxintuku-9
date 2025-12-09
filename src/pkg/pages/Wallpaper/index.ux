@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <image class="bg" src="/assets/img/bg.png"></image>
+    <image class="bg" src="/pkg/assets/img/bg.png"></image>
 
     <list class="list">
-      <!-- 顶部 标题 -->
+      <!-- 顶部 Logo -->
       <list-item type="header" class="header">
-        <text class="page-title">头像</text>
+        <image class="top-logo" src="/pkg/assets/img/logo.png"></image>
       </list-item>
 
       <!-- 分类区域 -->
@@ -19,12 +19,12 @@
         </div>
       </list-item>
 
-      <!-- 最新头像标题 -->
+      <!-- 最新壁纸标题 -->
       <list-item type="section-title" class="section-title-wrap">
-        <text class="section-title">最新头像</text>
+        <text class="section-title">最新壁纸</text>
       </list-item>
 
-      <!-- 最新头像列表 -->
+      <!-- 最新壁纸列表 -->
       <list-item type="wallpapers" class="wallpaper-grid">
         <div
           class="wallpaper-item"
@@ -39,7 +39,7 @@
               <stack class="new-tag-stack">
                 <image
                   class="new-tag-bg"
-                  src="/assets/img/biaoqianbg.png"
+                  src="/pkg/assets/img/biaoqianbg.png"
                 ></image>
                 <text class="new-tag-text">最新</text>
               </stack>
@@ -49,7 +49,7 @@
       </list-item>
 
       <!-- 底部占位，防止被导航栏遮挡 -->
-      <list-item type="spacer" style="height: 40px;"></list-item>
+      <list-item type="spacer" style="height: 46px;"></list-item>
     </list>
   </div>
 </template>
@@ -64,50 +64,71 @@ export default {
         {
           title: '动漫',
           desc: '动漫萌系，治愈日常',
-          imageUrl: '/assets/img/Frame 1000005678.png',
-          type: 'tx_dongman'
+          imageUrl: '/pkg/assets/img/ziran.png',
+          type: 'dongman'
         },
         {
           title: '人物',
           desc: '人物写真，简约高级',
-          imageUrl: '/assets/img/Frame 1000005679-1.png',
-          type: 'tx_renwu'
+          imageUrl: '/pkg/assets/img/Frame 1000005679.png',
+          type: 'renwu'
         },
         {
           title: '萌宠',
           desc: '萌宠憨态，治愈满分',
-          imageUrl: '/assets/img/Frame 1000005680-1.png',
-          type: 'tx_mengchong'
+          imageUrl: '/pkg/assets/img/Frame 1000005680.png',
+          type: 'mengchong'
         },
         {
           title: '自然',
           desc: '自然云海，浪漫梦幻',
-          imageUrl: '/assets/img/Frame 1000005681-1.png',
-          type: 'tx_ziran'
+          imageUrl: '/pkg/assets/img/Frame 1000005681.png',
+          type: 'ziran'
         }
       ],
-      wallpaperList: []
+      wallpaperList: [
+        {
+          id: 'test_1',
+          imageUrl: 'https://cdn.shijinzhuang.com/qcloud/bz/zx/1.jpg',
+          isNew: true
+        },
+        {
+          id: 'test_2',
+          imageUrl: 'https://cdn.shijinzhuang.com/qcloud/bz/zx/2.jpg',
+          isNew: true
+        },
+        {
+          id: 'test_3',
+          imageUrl: 'https://cdn.shijinzhuang.com/qcloud/bz/zx/3.jpg',
+          isNew: false
+        }
+      ]
     }
   },
   onInit() {
-    this.loadLatestAvatars()
+    console.log('Wallpaper tab onInit called')
+    console.log('Initial wallpaperList:', this.wallpaperList)
+    this.loadLatestWallpapers()
   },
-  loadLatestAvatars() {
-    // 加载最新头像（1-20张）
+  loadLatestWallpapers() {
+    console.log('loadLatestWallpapers called')
+    // 加载最新壁纸（1-20张）
     const list = []
-    const baseUrl = 'https://cdn.shijinzhuang.com/qcloud/tx/dm/'
+    const baseUrl = 'https://cdn.shijinzhuang.com/qcloud/bz/zx/'
     for (let i = 1; i <= 20; i++) {
       list.push({
-        id: `av_${i}`,
+        id: `wp_${i}`,
         imageUrl: `${baseUrl}${i}.jpg`,
         isNew: true
       })
     }
+    console.log('wallpaperList length:', list.length)
     this.wallpaperList = list
+    console.log('this.wallpaperList:', this.wallpaperList)
   },
   openCategory(item) {
     router.push({
-      uri: '/pages/CategoryList',
+      uri: '/pkg/pages/CategoryList',
       params: {
         title: item.title,
         type: item.type
@@ -116,7 +137,7 @@ export default {
   },
   openWallpaper(item) {
     router.push({
-      uri: '/pages/AvatarDetail',
+      uri: '/pkg/pages/WallpaperDetail',
       params: {
         imageUrl: item.imageUrl,
         itemId: item.id
@@ -130,6 +151,8 @@ export default {
 .container {
   flex-direction: column;
   flex: 1;
+  width: 100%;
+  height: 100%;
   background-color: #0e1b23;
   overflow: hidden;
 }
@@ -146,6 +169,7 @@ export default {
 .list {
   flex: 1;
   flex-direction: column;
+  width: 100%;
   background-color: transparent;
 }
 
@@ -155,11 +179,9 @@ export default {
   padding-top: 12px;
   padding-bottom: 7px;
 }
-.page-title {
-  font-size: 9px;
-  font-weight: bold;
-  color: #ffffff;
-  text-align: center;
+.top-logo {
+  height: 18px;
+  object-fit: contain;
 }
 
 /* Categories */
@@ -185,11 +207,6 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-.category-placeholder {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.2);
 }
 .category-text-wrap {
   flex-direction: column;
@@ -231,7 +248,7 @@ export default {
 }
 .wallpaper-item {
   width: 113px;
-  height: 113px;
+  height: 150px;
   margin-bottom: 7px;
   border-radius: 5px;
   overflow: hidden;
@@ -269,37 +286,5 @@ export default {
   font-size: 5px;
   color: #000000;
   font-weight: bold;
-}
-/* Tab Bar */
-.tab-bar {
-  width: 100%;
-  height: 35px;
-  background-color: rgba(0, 0, 0, 0.8);
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
-}
-.tab-item {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 35px;
-}
-.tab-icon {
-  width: 12px;
-  height: 12px;
-  object-fit: contain;
-  margin-bottom: 2px;
-}
-.tab-text {
-  font-size: 6px;
-  color: #888888;
-}
-.tab-text.active {
-  color: #9bfad9;
 }
 </style>
